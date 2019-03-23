@@ -8,12 +8,12 @@ Difficulty: Medium
 ## System Enumeration
 
 ### NMAP
-![alt text](https://github.com/Gesundheit/HTB-Writeups/blob/master/boxImages/frolicnmap.png "NMAP")
+![alt text](https://github.com/Gesundheit/HTB-Writeups/blob/master/boxImages/Frolic/frolicnmap.png "NMAP")
 
 We see two different ports that we can access, `1880` and `9999`
 
 ### Port 1880: Node-RED service
-![alt text](https://github.com/Gesundheit/HTB-Writeups/blob/master/boxImages/frolicRED.png "RED Service")
+![alt text](https://github.com/Gesundheit/HTB-Writeups/blob/master/boxImages/Frolic/frolicRED.png "RED Service")
 
 ### Port 9999: nginx service
 ![alt text](https://github.com/Gesundheit/HTB-Writeups/blob/master/boxImages/Frolic/frolicnginx.png "NGINX")
