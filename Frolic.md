@@ -111,7 +111,6 @@ Using metasploit, I was able to gain a reverse shell through playsms service
 ![alt text](https://github.com/Gesundheit/HTB-Writeups/blob/master/boxImages/Frolic/frolicuser.png "User")
 
 Finally got user
-`user.txt = 2ab95909cf509f85a6f476b59a0c2fe0`
 
 ## Privilege Escalation
 
@@ -159,4 +158,3 @@ We obtain root
 
 ![alt text](https://github.com/Gesundheit/HTB-Writeups/blob/master/boxImages/Frolic/frolicroot.png "Rooted")
 
-`root.txt = 85d3fdf03f969892538ba9a731826222`
