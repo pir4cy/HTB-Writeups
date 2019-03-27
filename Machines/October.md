@@ -135,6 +135,6 @@ Simply execute `python bufferOverflow.py`.
 
 ![Overflow](boxImages/October/bufferOverflow.png "Overflow")
 
-And voila, we get a root shell:
+And we are root:
 
 ![Pwnage](boxImages/October/owned.png "Rooted")
