@@ -10,7 +10,7 @@ Difficulty: Easy
 
 ### NMAP
 
-![alt text](https://github.com/Gesundheit/HTB-Writeups/blob/master/boxImages/Lame/nmap.png "NMAP")
+![Nmap](boxImages/Lame/nmap.png "NMAP")
 
 We see that we have 4 open ports:  
 
@@ -25,7 +25,7 @@ First thing that came to mind was logging in to the FTP, but that wasn't fruitfu
 sure enough we had a backdoor exploit that could be used to get in.  
 But it failed:
 
-![alt text](https://github.com/Gesundheit/HTB-Writeups/blob/master/boxImages/Lame/ftp.png "FTP")
+![FTP](boxImages/Lame/ftp.png "FTP")
 
 So we move on to the other exploitable service I could see: `Samba`
 
@@ -33,11 +33,11 @@ So we move on to the other exploitable service I could see: `Samba`
 
 A quick google of `Samba 3.0.20 - Debian` shows
 
-![alt text](https://github.com/Gesundheit/HTB-Writeups/blob/master/boxImages/Lame/googlesamba.png "Google Result")
+![Google Search](boxImages/Lame/googlesamba.png "Google Result")
 
 The first link directly gives us everything we need to pop this box
 
-![alt text](https://github.com/Gesundheit/HTB-Writeups/blob/master/boxImages/Lame/rapidpage.png "Rapid7")
+![Rapid7](boxImages/Lame/rapidpage.png "Rapid7")
 
 ## Exploit
 
@@ -45,8 +45,8 @@ A simple and straightforward exploit.
   * set RHOST `10.10.10.3`
   * run
   
-![alt text](https://github.com/Gesundheit/HTB-Writeups/blob/master/boxImages/Lame/msfconsole.png "MSFConsole")
+![Exploiting](boxImages/Lame/msfconsole.png "MSFConsole")
 
 Finally, we obtain a root shell and hence our flags
 
-![alt text](https://github.com/Gesundheit/HTB-Writeups/blob/master/boxImages/Lame/owned.png "Owned")
+![Pwnage](boxImages/Lame/owned.png "Owned")
