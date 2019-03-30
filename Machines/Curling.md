@@ -7,11 +7,7 @@
 
 ### Nmap
 
-![Nmap](boxImages/Curling/nmap.png "Nmap")
-
-### Dirb
-
-![Dirb](boxImages/Curling/dirbOutput.png "Dirb Output")
+![Nmap](boxImages/Curling/nmap.png "Nmap"
 
 ### Website
 
