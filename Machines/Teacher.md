@@ -57,10 +57,8 @@ We found the password and logged in to moodle
 
 Step 1: Create a quiz.  
 Step 2: Add a calculated question.
-	
 	![Adding a Question](boxImages/Teacher/questionadd.png "Calculated Question")  
 Step 3: Add the formula given to the answer.
-	
 	![Answer](boxImages/Teacher/formulaUsed.png "Formula Used")  
 Step 4: Use the RCE to obtain a reverse shell.  
 	I used the netcat reverse shell, simply append the code like so
