@@ -130,12 +130,12 @@ Step 2: Finding buffer limit using pattern offset.
 
 ### Using libc-search
 
-Step 1: Use `ldd rop` to find what library its using
-Step 2: Add gcc library to $PATH, using `export PATH = /usr/lib/gcc/i686-linux-gnu/:/sbin:/bin:/usr/sbin:/usr/bin`
-Step 3: Upload libc-search.c to server (https://0xdeadbeef.info/code/libc-search.c)
-Step 4: `gcc libc-search.c -o libc-search -lc -ldl`
-Step 5: Search for system, exit using -s 
-Step 6: Search for /bin/sh using -p (set libbase using -b)
+Step 1: Use `ldd rop` to find what library its using  
+Step 2: Add gcc library to $PATH, using `export PATH = /usr/lib/gcc/i686-linux-gnu/:/sbin:/bin:/usr/sbin:/usr/bin`  
+Step 3: Upload libc-search.c to server (https://0xdeadbeef.info/code/libc-search.c)  
+Step 4: `gcc libc-search.c -o libc-search -lc -ldl`  
+Step 5: Search for system, exit using -s   
+Step 6: Search for /bin/sh using -p (set libbase using -b)  
 
 ![LIBC-Search](boxImages/Frolic/froliclibc.png "Libc Enumeration")
 
