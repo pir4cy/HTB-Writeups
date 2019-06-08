@@ -107,7 +107,7 @@ Enumerating the system, we get the following information
 Searching for a possible exploit on searchsploit  
 ![SearchSploit](boxImages/Help/searchsploit.png "Searchsploit")
 
-Looking up the kernel exploit and running it on the machine, we get root!
+Looking up the kernel exploit and running it on the machine, we get root!  
 ![Root Gained](boxImages/Help/rootgained.png "Rooted!")
 
 Thank you for reading!
